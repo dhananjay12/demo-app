@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property dbms="mysql" name="autoIncrement" value="true"/>
+
+    <property dbms="mssql" name="charDataType" value="NCHAR"/>
+    <property dbms="mysql" name="charDataType" value="CHAR"/>
+    <property dbms="postgresql" name="charDataType" value="CHAR"/>
+
+    <property dbms="mssql" name="varcharDataType" value="NVARCHAR"/>
+    <property dbms="mysql" name="varcharDataType" value="VARCHAR"/>
+    <property dbms="postgresql" name="varcharDataType" value="VARCHAR"/>
+
+    <property dbms="mssql" name="fixedPointDataType" value="NUMERIC"/>
+    <property dbms="mysql" name="fixedPointDataType" value="DECIMAL"/>
+    <property dbms="postgresql" name="fixedPointDataType" value="NUMERIC"/>
+
+    <property dbms="mssql" name="clobDataType" value="TEXT"/>
+    <property dbms="mysql" name="clobDataType" value="TEXT"/>
+    <property dbms="postgresql" name="clobDataType" value="TEXT"/>
+
+    <property dbms="mssql" name="dateTimeDataType" value="DATETIME2"/>
+    <property dbms="mysql" name="dateTimeDataType" value="DATETIME"/>
+    <property dbms="postgresql" name="dateTimeDataType" value="TIMESTAMP"/>
+
+    <property dbms="mssql" name="timestampDataType" value="DATETIME"/>
+    <property dbms="mysql" name="timestampDataType" value="TIMESTAMP"/>
+    <property dbms="postgresql" name="timestampDataType" value="TIMESTAMP"/>
+
+    <property dbms="mssql" name="db.type" value="mssql"/>
+    <property dbms="mysql" name="db.type" value="mysql"/>
+    <property dbms="postgresql" name="db.type" value="postgresql"/>
+
+
+    <!-- releases -->
+    <include file="db.changelog-1.0.0.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

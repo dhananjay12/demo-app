@@ -1,0 +1,55 @@
+###
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "title": "Project Hail Mary",
+  "author": "Andy Weir",
+  "publicationYear": 2021,
+  "isbn": "978-0-593-13520-5"
+}
+
+###
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "title": "The Three-Body Problem",
+  "author": "Liu Cixin",
+  "publicationYear": 2006,
+  "isbn": "978-0-7653-7706-7"
+}
+
+###
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "title": "The Martian",
+  "author": "Andy Weir",
+  "publicationYear": 2011,
+  "isbn": "978-0-553-41802-6"
+}
+
+###
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "title": "Dark Matter",
+  "author": "Blake Crouch",
+  "publicationYear": 2016,
+  "isbn": "978-1-101-90422-6"
+}
+
+###
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "title": "Network Effect",
+  "author": "Martha Wells",
+  "publicationYear": 2020,
+  "isbn": "978-1-250-22963-9"
+}
+

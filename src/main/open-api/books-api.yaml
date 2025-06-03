@@ -1,0 +1,387 @@
+openapi: 3.0.3
+info:
+  title: Book Library Management API
+  description: |
+    A comprehensive RESTful API for managing a book library system.
+    
+    This API provides full CRUD operations for book management including:
+    - Adding new books with validation
+    - Searching books by title or author
+    - Updating book details
+    - Deleting books from the library
+    
+    Built with Spring Boot 3.2, Spring Data JPA, and includes comprehensive validation.
+  version: 1.0.0
+  contact:
+    name: Library Management Team
+    email: library@example.com
+    url: https://example.com
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Development server
+  - url: https://api.library.com
+    description: Production server
+tags:
+  - name: Books
+    description: Operations related to book management
+
+paths:
+  /books:
+    get:
+      tags:
+        - Books
+      summary: Get all books or search books
+      description: |
+        Retrieve all books from the library or search for specific books.
+        You can search by title or author using query parameters.
+      parameters:
+        - name: title
+          in: query
+          description: Search books by title (partial match, case-insensitive)
+          required: false
+          schema:
+            type: string
+            example: "Spring Boot"
+        - name: author
+          in: query
+          description: Search books by author (partial match, case-insensitive)
+          required: false
+          schema:
+            type: string
+            example: "John Doe"
+      responses:
+        '200':
+          description: Successfully retrieved books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+              examples:
+                all_books:
+                  summary: All books response
+                  value:
+                    - id: 1
+                      title: "Effective Java"
+                      author: "Joshua Bloch"
+                      isbn: "978-0134685991"
+                      publicationYear: 2017
+                    - id: 2
+                      title: "Spring Boot in Action"
+                      author: "Craig Walls"
+                      isbn: "978-1617292545"
+                      publicationYear: 2015
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - Books
+      summary: Add a new book
+      description: Add a new book to the library with validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+            examples:
+              new_book:
+                summary: New book example
+                value:
+                  title: "Clean Code"
+                  author: "Robert C. Martin"
+                  isbn: "978-0132350884"
+                  publicationYear: 2008
+      responses:
+        '201':
+          description: Book successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+              example:
+                id: 3
+                title: "Clean Code"
+                author: "Robert C. Martin"
+                isbn: "978-0132350884"
+                publicationYear: 2008"
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          description: Book with this ISBN already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: "Book with ISBN 978-0132350884 already exists"
+                timestamp: "2024-01-15T12:00:00"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /books/{id}:
+    get:
+      tags:
+        - Books
+      summary: Get book by ID
+      description: Retrieve a specific book by its unique identifier
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the book
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Book found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+              example:
+                id: 1
+                title: "Effective Java"
+                author: "Joshua Bloch"
+                isbn: "978-0134685991"
+                publicationYear: 2017
+        '404':
+          $ref: '#/components/responses/BookNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - Books
+      summary: Update book by ID
+      description: Update an existing book's details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the book to update
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+            example:
+              title: "Effective Java (Updated Edition)"
+              author: "Joshua Bloch"
+              isbn: "978-0134685991"
+              publicationYear: 2018
+      responses:
+        '200':
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+              example:
+                id: 1
+                title: "Effective Java (Updated Edition)"
+                author: "Joshua Bloch"
+                isbn: "978-0134685991"
+                publicationYear: 2018
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/BookNotFound'
+        '409':
+          description: ISBN conflict with another book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: "Another book with ISBN 978-0134685991 already exists"
+                timestamp: "2024-01-15T13:00:00"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - Books
+      summary: Delete book by ID
+      description: Remove a book from the library
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the book to delete
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '204':
+          description: Book deleted successfully
+        '404':
+          $ref: '#/components/responses/BookNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    BookRequest:
+      type: object
+      required:
+        - title
+        - author
+        - isbn
+        - publicationYear
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Title of the book
+          example: "Effective Java"
+        author:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Author of the book
+          example: "Joshua Bloch"
+        isbn:
+          type: string
+          pattern: '^(?:(?:978|979)(?:\d{10}|[\s-]?\d[\s-]?\d{2}[\s-]?\d{6}[\s-]?\d|[\s-]\d[\s-]\d{3}[\s-]\d{5}[\s-]\d|[\s-]\d{2}[\s-]\d{2}[\s-]\d{6}[\s-]\d)|(?:\d{9}[\dXx]|\d[\s-]\d{3}[\s-]\d{5}[\s-][\dXx]|\d[\s-]\d{4}[\s-]\d{4}[\s-][\dXx]|\d{3}[\s-]\d{2}[\s-]\d{4}[\s-][\dXx]))$'
+          description: International Standard Book Number
+          example: "978-0134685991"
+        publicationYear:
+          type: integer
+          minimum: 1000
+          maximum: 2030
+          description: Year the book was published
+          example: 2017
+    Book:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - isbn
+        - publicationYear
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the book
+          example: 1
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Title of the book
+          example: "Effective Java"
+        author:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Author of the book
+          example: "Joshua Bloch"
+        isbn:
+          type: string
+          pattern: '^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]'
+          description: International Standard Book Number
+          example: "978-0134685991"
+        publicationYear:
+          type: integer
+          minimum: 1000
+          maximum: 2030
+          description: Year the book was published
+          example: 2017
+    ErrorResponse:
+      type: object
+      required:
+        - message
+        - timestamp
+      properties:
+        message:
+          type: string
+          description: Error message describing what went wrong
+          example: "Book not found with id: 1"
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the error occurred
+          example: "2024-01-15T10:30:00"
+    ValidationErrorResponse:
+      type: object
+      required:
+        - message
+        - timestamp
+        - errors
+      properties:
+        message:
+          type: string
+          description: General validation error message
+          example: "Validation failed"
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the error occurred
+          example: "2024-01-15T10:30:00"
+        errors:
+          type: array
+          description: List of specific field validation errors
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Name of the field that failed validation
+                example: "title"
+              message:
+                type: string
+                description: Validation error message for the field
+                example: "Title is required"
+
+  responses:
+    BookNotFound:
+      description: Book not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: "Book not found with id: 1"
+            timestamp: "2024-01-15T10:30:00"
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
+          example:
+            message: "Validation failed"
+            timestamp: "2024-01-15T10:30:00"
+            errors:
+              - field: "title"
+                message: "Title is required"
+              - field: "isbn"
+                message: "ISBN format is invalid"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: "An unexpected error occurred"
+            timestamp: "2024-01-15T10:30:00"

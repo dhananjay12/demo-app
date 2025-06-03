@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="create_books_table" author="dhananjay">
+        <comment>Create table books</comment>
+        <createTable tableName="books">
+            <column name="id" type="${varcharDataType}(36)" remarks="Unique identifier for the book">
+                <constraints primaryKey="true" primaryKeyName="pk_books"/>
+            </column>
+            <column name="title" type="${varcharDataType}(255)" remarks="Title of the book">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author" type="${varcharDataType}(255)" remarks="Author of the book">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isbn" type="${varcharDataType}(17)" remarks="ISBN of the book">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_books_isbn"/>
+            </column>
+            <column name="publication_year" type="${fixedPointDataType}(4)" remarks="Year the book was published">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

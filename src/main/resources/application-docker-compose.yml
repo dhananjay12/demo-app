@@ -1,0 +1,10 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+      file: docker-compose.yml
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydb
+    username: postgres
+    password: password123
+
