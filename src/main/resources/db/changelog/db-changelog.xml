@@ -17,6 +17,10 @@
     <property dbms="mysql" name="varcharDataType" value="VARCHAR"/>
     <property dbms="postgresql" name="varcharDataType" value="VARCHAR"/>
 
+    <property dbms="mssql" name="intDataType" value="int" />
+    <property dbms="mysql" name="intDataType" value="int(10)" />
+    <property dbms="postgresql" name="intDataType" value="int" />
+
     <property dbms="mssql" name="fixedPointDataType" value="NUMERIC"/>
     <property dbms="mysql" name="fixedPointDataType" value="DECIMAL"/>
     <property dbms="postgresql" name="fixedPointDataType" value="NUMERIC"/>

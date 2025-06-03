@@ -65,7 +65,6 @@ public class BookService {
 
     private BookEntity toEntity(Book book) {
         BookEntity entity = new BookEntity();
-        entity.setId(book.getId());
         entity.setTitle(book.getTitle());
         entity.setAuthor(book.getAuthor());
         entity.setIsbn(book.getIsbn());
