@@ -1,0 +1,6 @@
+### Get all
+GET http://localhost:8080/books
+
+
+### Get by id
+GET http://localhost:8080/books/1
