@@ -1,22 +1,19 @@
-# PORT is required for heroku deployment
 server:
   port: ${PORT:8080}
-
-app:
-  fortune:
-    source: file
-  fortunes:
-      - Today it's up to you to create the peacefulness you long for.
-      - Enjoy the good luck a companion brings you.
-      - Hard work pays off in the future, laziness pays off now.
-      - If you have something good in your life, don't let it go!
-      - A chance meeting opens new doors to success and friendship.
-      - You will have good luck and overcome many hardships.
-      - Your energy returns and you will get things done.
-      - Being alone and being lonely are two different things.
-      - Life is to you a dashing and bold adventure.
-      - Dispel negativity through creative activities.
-
-logging:
-  level:
-    com: DEBUG
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db-changelog.xml
+  datasource:
+    url: <>
+    username: your_username
+    password: your_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
