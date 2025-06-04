@@ -2,10 +2,6 @@ name: Main/master push/merge workflow
 
 on:
   workflow_dispatch:
-  merge:
-    branches:
-      - main
-      - release/*
   push:
     branches:
       - main
