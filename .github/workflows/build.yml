@@ -2,14 +2,17 @@ name: Main/master push/merge workflow
 
 on:
   workflow_dispatch:
+  merge:
+    branches:
+      - main
+      - release/*
   push:
     branches:
       - main
-      - master
       - release/*
 
 jobs:
-  push:
+  build:
     uses: dhananjay12/reusable-workflows/.github/workflows/build.yml@main
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
