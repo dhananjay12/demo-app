@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    uses: dhananjay12/reusable-workflows/.github/workflows/build.yml@main
+    uses: dhananjay12/reusable-workflows/.github/workflows/merge.yml@main
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
