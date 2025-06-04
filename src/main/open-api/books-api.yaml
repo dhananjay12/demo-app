@@ -69,12 +69,12 @@ paths:
                     - id: 1
                       title: "Effective Java"
                       author: "Joshua Bloch"
-                      isbn: "978-0134685991"
+                      isbn: "978-0-593-13520-5"
                       publicationYear: 2017
                     - id: 2
                       title: "Spring Boot in Action"
                       author: "Craig Walls"
-                      isbn: "978-1617292545"
+                      isbn: "978-0-593-13520-5"
                       publicationYear: 2015
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -96,7 +96,7 @@ paths:
                 value:
                   title: "Clean Code"
                   author: "Robert C. Martin"
-                  isbn: "978-0132350884"
+                  isbn: "978-0-593-13520-5"
                   publicationYear: 2008
       responses:
         '201':
@@ -109,7 +109,7 @@ paths:
                 id: 3
                 title: "Clean Code"
                 author: "Robert C. Martin"
-                isbn: "978-0132350884"
+                isbn: "978-0-593-13520-5"
                 publicationYear: 2008"
         '400':
           $ref: '#/components/responses/ValidationError'
@@ -120,7 +120,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
-                message: "Book with ISBN 978-0132350884 already exists"
+                message: "Book with ISBN 978-0-593-13520-5 already exists"
                 timestamp: "2024-01-15T12:00:00"
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -151,7 +151,7 @@ paths:
                 id: 1
                 title: "Effective Java"
                 author: "Joshua Bloch"
-                isbn: "978-0134685991"
+                isbn: "978-0-593-13520-5"
                 publicationYear: 2017
         '404':
           $ref: '#/components/responses/BookNotFound'
@@ -181,7 +181,7 @@ paths:
             example:
               title: "Effective Java (Updated Edition)"
               author: "Joshua Bloch"
-              isbn: "978-0134685991"
+              isbn: "978-0-593-13520-5"
               publicationYear: 2018
       responses:
         '200':
@@ -194,7 +194,7 @@ paths:
                 id: 1
                 title: "Effective Java (Updated Edition)"
                 author: "Joshua Bloch"
-                isbn: "978-0134685991"
+                isbn: "978-0-593-13520-5"
                 publicationYear: 2018
         '400':
           $ref: '#/components/responses/ValidationError'
@@ -207,7 +207,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
-                message: "Another book with ISBN 978-0134685991 already exists"
+                message: "Another book with ISBN 978-0-593-13520-5 already exists"
                 timestamp: "2024-01-15T13:00:00"
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -260,7 +260,7 @@ components:
           type: string
           pattern: '^(?:(?:978|979)(?:\d{10}|[\s-]?\d[\s-]?\d{2}[\s-]?\d{6}[\s-]?\d|[\s-]\d[\s-]\d{3}[\s-]\d{5}[\s-]\d|[\s-]\d{2}[\s-]\d{2}[\s-]\d{6}[\s-]\d)|(?:\d{9}[\dXx]|\d[\s-]\d{3}[\s-]\d{5}[\s-][\dXx]|\d[\s-]\d{4}[\s-]\d{4}[\s-][\dXx]|\d{3}[\s-]\d{2}[\s-]\d{4}[\s-][\dXx]))$'
           description: International Standard Book Number
-          example: "978-0134685991"
+          example: "978-0-593-13520-5"
         publicationYear:
           type: integer
           minimum: 1000
@@ -297,7 +297,7 @@ components:
           type: string
           pattern: '^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]'
           description: International Standard Book Number
-          example: "978-0134685991"
+          example: "978-0-593-13520-5"
         publicationYear:
           type: integer
           minimum: 1000

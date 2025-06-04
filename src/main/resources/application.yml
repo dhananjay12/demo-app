@@ -1,6 +1,15 @@
 server:
   port: ${PORT:8080}
 spring:
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start_and_stop
+      stop:
+        command: down
+        arguments: --volumes # Additional arg in down command so that volumes are removed
+      skip:
+        in-tests: false
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db-changelog.xml

@@ -29,6 +29,13 @@
     <sonar.projectKey>dhananjay12_demo-app</sonar.projectKey>
     <sonar.organization>dhananjay12</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
+    <coverage.reports.dir>${project.build.directory}/coverage-reports</coverage.reports.dir>
+    <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/jacoco-unit/jacoco.xml,${project.build.directory}/jacoco-integration/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <sonar.coverage.exclusions>**/DemoAppApplication.java</sonar.coverage.exclusions>
+
+    <skip.unit.tests>false</skip.unit.tests>
+    <skip.integration.tests>false</skip.integration.tests>
   </properties>
 
   <dependencyManagement>
@@ -141,21 +148,96 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>${skip.unit.tests}</skipTests>
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+          </includes>
+          <excludes>
+            <exclude>**/*IT.java</exclude>
+            <exclude>**/*It.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven-failsafe-plugin.version}</version>
+        <executions>
+          <execution>
+            <configuration>
+              <!-- Skip the execution from spring-boot-starter-parent as it has no id -->
+              <skip>true</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <skipITs>${skip.integration.tests}</skipITs>
+              <includes>
+                <include>**/*It.java</include>
+                <include>**/*IT.java</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco-maven-plugin.version}</version>
         <executions>
+          <!-- Unit Test Coverage -->
           <execution>
+            <id>prepare-agent-unit</id>
+            <phase>process-test-classes</phase>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-unit.exec</destFile>
+            </configuration>
           </execution>
           <execution>
-            <id>report</id>
-            <phase>test</phase>
+            <id>report-unit</id>
+            <phase>verify</phase>
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-unit.exec</dataFile>
+              <outputDirectory>${project.build.directory}/jacoco-unit</outputDirectory>
+            </configuration>
+          </execution>
+
+          <!-- Integration Test Coverage -->
+          <execution>
+            <id>prepare-agent-integration</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-integration.exec</destFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>report-integration</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-integration.exec</dataFile>
+              <outputDirectory>${project.build.directory}/jacoco-integration</outputDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -207,5 +289,33 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>docker-compose</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco-maven-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>report-docker-compose</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+                <configuration>
+                  <dataFile>${project.build.directory}/jacoco-docker-compose.exec</dataFile>
+                  <outputDirectory>${project.build.directory}/jacoco-docker-compose</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
