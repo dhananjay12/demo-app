@@ -3,15 +3,12 @@ info:
   title: Book Library Management API
   description: |
     A comprehensive RESTful API for managing a book library system.
-    
     This API provides full CRUD operations for book management including:
     - Adding new books with validation
     - Searching books by title or author
     - Updating book details
     - Deleting books from the library
-    
-    Built with Spring Boot 3.2, Spring Data JPA, and includes comprehensive validation.
-  version: 1.0.0
+  version: 1.0.2
   contact:
     name: Library Management Team
     email: library@example.com
@@ -237,118 +234,13 @@ paths:
 components:
   schemas:
     BookRequest:
-      type: object
-      required:
-        - title
-        - author
-        - isbn
-        - publicationYear
-      properties:
-        title:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Title of the book
-          example: "Effective Java"
-        author:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Author of the book
-          example: "Joshua Bloch"
-        isbn:
-          type: string
-          pattern: '^(?:(?:978|979)(?:\d{10}|[\s-]?\d[\s-]?\d{2}[\s-]?\d{6}[\s-]?\d|[\s-]\d[\s-]\d{3}[\s-]\d{5}[\s-]\d|[\s-]\d{2}[\s-]\d{2}[\s-]\d{6}[\s-]\d)|(?:\d{9}[\dXx]|\d[\s-]\d{3}[\s-]\d{5}[\s-][\dXx]|\d[\s-]\d{4}[\s-]\d{4}[\s-][\dXx]|\d{3}[\s-]\d{2}[\s-]\d{4}[\s-][\dXx]))$'
-          description: International Standard Book Number
-          example: "978-0-593-13520-5"
-        publicationYear:
-          type: integer
-          minimum: 1000
-          maximum: 2030
-          description: Year the book was published
-          example: 2017
+      $ref: './common-types/BookRequest.yaml'
     Book:
-      type: object
-      required:
-        - id
-        - title
-        - author
-        - isbn
-        - publicationYear
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: Unique identifier for the book
-          example: 1
-        title:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Title of the book
-          example: "Effective Java"
-        author:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Author of the book
-          example: "Joshua Bloch"
-        isbn:
-          type: string
-          pattern: '^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]'
-          description: International Standard Book Number
-          example: "978-0-593-13520-5"
-        publicationYear:
-          type: integer
-          minimum: 1000
-          maximum: 2030
-          description: Year the book was published
-          example: 2017
+      $ref: './common-types/Book.yaml'
     ErrorResponse:
-      type: object
-      required:
-        - message
-        - timestamp
-      properties:
-        message:
-          type: string
-          description: Error message describing what went wrong
-          example: "Book not found with id: 1"
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp when the error occurred
-          example: "2024-01-15T10:30:00"
+      $ref: './common-types/ErrorResponse.yaml'
     ValidationErrorResponse:
-      type: object
-      required:
-        - message
-        - timestamp
-        - errors
-      properties:
-        message:
-          type: string
-          description: General validation error message
-          example: "Validation failed"
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp when the error occurred
-          example: "2024-01-15T10:30:00"
-        errors:
-          type: array
-          description: List of specific field validation errors
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                description: Name of the field that failed validation
-                example: "title"
-              message:
-                type: string
-                description: Validation error message for the field
-                example: "Title is required"
+      $ref: './common-types/ValidationErrorResponse.yaml'
 
   responses:
     BookNotFound:
